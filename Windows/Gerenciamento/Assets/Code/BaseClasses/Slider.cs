@@ -6,19 +6,22 @@ public class Slider
 {
 	public Rect BoundingRectangle;
 	
-	float Width = 100 , Heigth = 100;
-	
 	public float Value;
 	
-	public Slider (Vector2 Position , float value)
+	public Slider (Vector2 Position , Vector2 Size , float value)
 	{		
-		BoundingRectangle = new Rect(Position.x , Position.y , Width , Heigth);
+		BoundingRectangle = new Rect(Position.x , Position.y , Size.x , Size.y);
 		
 		Value = value;
 	}
 
-	public void Draw(GUIStyle SliderStyle , GUIStyle ThumbStyle)
+    public void Draw (float MinValue , float MaxValue)
+    {
+        Value = GUI.HorizontalSlider(BoundingRectangle , Value , MinValue , MaxValue);
+    }
+
+	public void Draw (float MinValue , float MaxValue , GUIStyle SliderStyle , GUIStyle ThumbStyle)
 	{
-        Value = GUI.HorizontalSlider(BoundingRectangle, Value, 0.0f, 10.0f, SliderStyle, ThumbStyle);
+        Value = GUI.HorizontalSlider(BoundingRectangle , Value , MinValue , MaxValue , SliderStyle , ThumbStyle);
 	}
 }

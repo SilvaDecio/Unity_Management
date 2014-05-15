@@ -12,6 +12,8 @@ public class Won : MonoBehaviour
 	bool IsRecordBroken;
 
     TextBlock ScoreInfo;
+
+    public GUIStyle LabelStyle;
 	
 	// Use this for initialization
 	void Start ()
@@ -22,13 +24,13 @@ public class Won : MonoBehaviour
         {
             case GameLanguage.English:
 
-            	BackGroundImage = (Texture2D)Resources.Load("BackGroundImages/Won");
+                BackGroundImage = Resources.Load("BackGroundImages/Won") as Texture2D;
                 
             break;
 
         	case GameLanguage.Portugues:
-			
-				BackGroundImage = (Texture2D)Resources.Load("Telas/Venceu");
+
+                BackGroundImage = Resources.Load("Telas/Venceu") as Texture2D;
 			
             break;
         }
@@ -55,7 +57,7 @@ public class Won : MonoBehaviour
         
 		# endregion
 
-        ScoreInfo = new TextBlock(new Vector2(500 , 300) , GamePlay.Score.ToString());
+        ScoreInfo = new TextBlock(new Vector2(500 , 300) , new Vector2(100 , 50) , GamePlay.Score.ToString());
 	}
 	
 	// Update is called once per frame
@@ -94,16 +96,16 @@ public class Won : MonoBehaviour
         }		
 	}
 	
-	void OnGUI()
+	void OnGUI ()
 	{
 		StateManager.DrawBackGroundImage(BackGroundImage);
 
-        ScoreInfo.Draw(StateManager.GameSkin.label);
+        ScoreInfo.Draw(LabelStyle);
 
         StateManager.TransitionEffect();
 	}
 
-    void GetMenu()
+    void GetMenu ()
     {
         GamePlay.ResetScore();
 
@@ -112,7 +114,7 @@ public class Won : MonoBehaviour
         StateManager.ChangeState(GameStates.Menu);
     }
 
-    void GetSaveRecord()
+    void GetSaveRecord ()
     {
         StateManager.ChangeState(GameStates.SaveRecord);
     }

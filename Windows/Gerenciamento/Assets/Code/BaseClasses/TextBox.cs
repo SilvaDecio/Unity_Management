@@ -8,17 +8,20 @@ public class TextBox
 	
 	Rect BoundingRectangle;
 	
-	float Width = 100 , Heigth = 30;
-	
-	public TextBox (Vector2 Position , string text)
+	public TextBox (Vector2 Position , Vector2 Size , string text)
 	{
 		Text = text;
 		
-		BoundingRectangle = new Rect(Position.x , Position.y , Width , Heigth);
+		BoundingRectangle = new Rect(Position.x , Position.y , Size.x , Size.y);
 	}
-	
-	public void Draw(GUIStyle TextFieldStyle)
+
+    public void Draw ()
+    {
+        Text = GUI.TextField(BoundingRectangle , Text);
+    }
+
+	public void Draw (GUIStyle TextBoxStyle)
 	{
-		Text = GUI.TextField(BoundingRectangle , Text , TextFieldStyle);
+		Text = GUI.TextField(BoundingRectangle , Text , TextBoxStyle);
 	}
 }

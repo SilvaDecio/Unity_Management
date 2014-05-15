@@ -5,7 +5,11 @@ using System.Collections;
 public class Lost : MonoBehaviour
 {
 	Texture2D BackGroundImage;
-	
+
+    TextBlock ScoreInfo;
+
+    public GUIStyle LabelStyle;
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -15,18 +19,20 @@ public class Lost : MonoBehaviour
         {
             case GameLanguage.English:
 
-            	BackGroundImage = (Texture2D)Resources.Load("BackGroundImages/Lost");
+                BackGroundImage = Resources.Load("BackGroundImages/Lost") as Texture2D;
 
             break;
 
         	case GameLanguage.Portugues:
-			
-				BackGroundImage = (Texture2D)Resources.Load("Telas/Perdeu");
+
+                BackGroundImage = Resources.Load("Telas/Perdeu") as Texture2D;
 			
             break;
         }
 
         # endregion
+
+        ScoreInfo = new TextBlock(new Vector2(500 , 300) , new Vector2(100 , 50) , GamePlay.Score.ToString());
 	}
 	
 	// Update is called once per frame
@@ -49,9 +55,11 @@ public class Lost : MonoBehaviour
 		}
 	}
 	
-	void OnGUI()
+	void OnGUI ()
 	{
 		StateManager.DrawBackGroundImage(BackGroundImage);
+
+        ScoreInfo.Draw(LabelStyle);
 
         StateManager.TransitionEffect();
 	}

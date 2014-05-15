@@ -15,13 +15,13 @@ public class Directions : MonoBehaviour
         {
             case GameLanguage.English:
 
-            	BackGroundImage = (Texture2D)Resources.Load("BackGroundImages/Directions");
+                BackGroundImage = Resources.Load("BackGroundImages/Directions") as Texture2D;
 
             break;
 
-        case GameLanguage.Portugues:
-			
-				BackGroundImage = (Texture2D)Resources.Load("Telas/Instrucoes");
+            case GameLanguage.Portugues:
+
+                BackGroundImage = Resources.Load("Telas/Instrucoes") as Texture2D;
 			
             break;
         }
@@ -45,7 +45,7 @@ public class Directions : MonoBehaviour
 		}		
 	}
 	
-	void OnGUI()
+	void OnGUI ()
 	{
 		StateManager.DrawBackGroundImage(BackGroundImage);
 

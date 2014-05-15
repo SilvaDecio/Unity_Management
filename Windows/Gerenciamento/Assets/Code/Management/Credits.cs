@@ -14,14 +14,14 @@ public class Credits : MonoBehaviour
 		switch (StateManager.CurrentLanguage)
         {
             case GameLanguage.English:
-			
-				BackGroundImage = (Texture2D)Resources.Load("BackGroundImages/Credits");
+
+                BackGroundImage = Resources.Load("BackGroundImages/Credits") as Texture2D;
             
             break;
 
         	case GameLanguage.Portugues:
 
-           		BackGroundImage = (Texture2D)Resources.Load("Telas/Creditos");
+                BackGroundImage = Resources.Load("Telas/Creditos") as Texture2D;
 			
            	break;
         }
@@ -45,7 +45,7 @@ public class Credits : MonoBehaviour
 		}
 	}
 	
-	void OnGUI()
+	void OnGUI ()
 	{
 		StateManager.DrawBackGroundImage(BackGroundImage);
 

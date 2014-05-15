@@ -24,8 +24,6 @@ public class PlayerController
         }
         else
         {
-            //PlayerController.Delete();
-
             Name0 = PlayerPrefs.GetString("Name0");
             Name1 = PlayerPrefs.GetString("Name1");
             Name2 = PlayerPrefs.GetString("Name2");

@@ -5,44 +5,50 @@ using System.Collections;
 public class Settings : MonoBehaviour
 {
 	Texture2D BackGroundImage;
-	
-	Button VibrationButton;
+
+    # region Settings Properties
+
+    Button VibrationButton;
 	
 	Slider SongSlider , EffectSlider;
 	
 	TextBlock SongSliderInfo , EffectSliderInfo;
 
+    # endregion
+
+    public GUIStyle SliderStyle , ThumbStyle , LabelStyle , ButtonStyle;
+
 	// Use this for initialization
 	void Start ()
 	{		
-		# region Sliders
-
-        SongSlider = new Slider(new Vector2(500, 300), AudioController.SongVolume);
-
-        EffectSlider = new Slider(new Vector2(700, 300), AudioController.EffectVolume);		
-		
-		SongSliderInfo = new TextBlock(new Vector2(SongSlider.BoundingRectangle.x , SongSlider.BoundingRectangle.y + 30) , string.Empty);
-			
-		EffectSliderInfo = new TextBlock(new Vector2(EffectSlider.BoundingRectangle.x , SongSlider.BoundingRectangle.y + 30) , string.Empty);
-		
-		# endregion
-		
 		# region Language
 
         switch (StateManager.CurrentLanguage)
         {
             case GameLanguage.English:
 
-            	BackGroundImage = (Texture2D)Resources.Load("BackGroundImages/Settings");
+                BackGroundImage = Resources.Load("BackGroundImages/Settings") as Texture2D;
 
             break;
 
         	case GameLanguage.Portugues:
-			
-				BackGroundImage = (Texture2D)Resources.Load("Telas/Configuracoes");
+
+                BackGroundImage = Resources.Load("Telas/Configuracoes") as Texture2D;
 			
             break;
         }
+
+        # endregion
+
+        # region Sliders
+
+        SongSlider = new Slider(new Vector2(300 , 300) , new Vector2(100 , 100) , AudioController.SongVolume * 10);
+
+        EffectSlider = new Slider(new Vector2(600 , 300) , new Vector2(100 , 100) , AudioController.EffectVolume * 10);
+
+        SongSliderInfo = new TextBlock(new Vector2(SongSlider.BoundingRectangle.x , SongSlider.BoundingRectangle.y + 30) , new Vector2(100 , 50) , string.Empty);
+
+        EffectSliderInfo = new TextBlock(new Vector2(EffectSlider.BoundingRectangle.x , SongSlider.BoundingRectangle.y + 30) , new Vector2(100 , 50) , string.Empty);
 
         # endregion
 
@@ -58,30 +64,25 @@ public class Settings : MonoBehaviour
 		}
 		else
 		{
+            GameObject.Find("AudioController").audio.volume = AudioController.SongVolume;
+
 			if(Input.GetKeyDown(KeyCode.Escape))
 			{
                 AudioController.Save();
 				
 				StateManager.ChangeState(GameStates.Menu);
 			}
-
-            GameObject.Find("AudioController").audio.volume = AudioController.SongVolume / 10;
-		}		
+		}
 	}
 	
-	void OnGUI()
+	void OnGUI ()
 	{
 		StateManager.DrawBackGroundImage(BackGroundImage);
         
         # region Sliders
 
-        SongSlider.Draw(StateManager.GameSkin.horizontalSlider, StateManager.GameSkin.horizontalSliderThumb);
-
-        EffectSlider.Draw(StateManager.GameSkin.horizontalSlider, StateManager.GameSkin.horizontalSliderThumb);
-
-        AudioController.SongVolume = (int)SongSlider.Value;
-
-        AudioController.EffectVolume = (int)EffectSlider.Value;
+        SongSlider.Draw(0.0f , 10.0f);
+        EffectSlider.Draw(0.0f , 10.0f);
 
         # region Language
 
@@ -89,25 +90,29 @@ public class Settings : MonoBehaviour
         {
             case GameLanguage.English:
 
-                SongSliderInfo.Text = "Musics		" + (int)AudioController.SongVolume;
-
-                EffectSliderInfo.Text = "Effects		" + (int)AudioController.EffectVolume;
+                SongSliderInfo.Text = "Musics		" + (int)SongSlider.Value;
+                EffectSliderInfo.Text = "Effects		" + (int)EffectSlider.Value;
 
             break;
 
         	case GameLanguage.Portugues:
 
-            SongSliderInfo.Text = "Músicas		" + (int)AudioController.SongVolume;
-
-            EffectSliderInfo.Text = "Efeitos		" + (int)AudioController.EffectVolume;
+            SongSliderInfo.Text = "Musicas		" + (int)SongSlider.Value;
+            EffectSliderInfo.Text = "Efeitos		" + (int)EffectSlider.Value;
 			
             break;
         }
 
         # endregion
 
-        SongSliderInfo.Draw(StateManager.GameSkin.label);
-        EffectSliderInfo.Draw(StateManager.GameSkin.label);
+        SongSliderInfo.Draw(LabelStyle);
+        EffectSliderInfo.Draw(LabelStyle);
+
+        AudioController.SongVolume = (int)SongSlider.Value;
+        AudioController.EffectVolume = (int)EffectSlider.Value;
+
+        AudioController.SongVolume /= 10;
+        AudioController.EffectVolume /= 10;
 		
 		# endregion
 

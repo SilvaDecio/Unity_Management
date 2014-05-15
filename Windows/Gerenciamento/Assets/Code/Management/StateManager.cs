@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public enum GameLanguage
 {
-	English, Portugues
+	English , Portugues
 }
 
 public class StateManager : MonoBehaviour
@@ -26,10 +26,8 @@ public class StateManager : MonoBehaviour
 
     # endregion
 
-    # region Hud Properties
+    # region HUD Properties
     
-    public static GUISkin GameSkin;
-
     public static Color DefaultColor;
 
     # endregion
@@ -39,7 +37,7 @@ public class StateManager : MonoBehaviour
 	public static GameLanguage CurrentLanguage;
 
     // Use this for initialization
-	public static void Start()
+	public static void Start ()
     {
         # region Language
 
@@ -68,13 +66,11 @@ public class StateManager : MonoBehaviour
 		AlphaChannel = 0.0f;
 		AlphaTax = 0.025f;
 		
-		TransitionImage = (Texture2D)Resources.Load("TransitionImage");
+		TransitionImage = Resources.Load("TransitionImage") as Texture2D;
 
         # endregion
 
         # region HUD
-
-        GameSkin = Resources.Load("GameSkin") as GUISkin;
 
         DefaultColor = GUI.color;
 
@@ -96,7 +92,7 @@ public class StateManager : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	public static void Update()
+	public static void Update ()
     {
         # region Fade Out
 
@@ -137,7 +133,7 @@ public class StateManager : MonoBehaviour
         # endregion
     }
 	
-	public static void ChangeState(GameStates NextState)
+	public static void ChangeState (GameStates NextState)
 	{	
 		CurrentState = NextState;
 
@@ -148,18 +144,18 @@ public class StateManager : MonoBehaviour
 		FadeOut = true;
 	}
 	
-	public static void DrawBackGroundImage(Texture2D BackGroundImage)
+	public static void DrawBackGroundImage (Texture2D BackGroundImage)
 	{
 		GUI.DrawTexture(new Rect(0 , 0 , Screen.width , Screen.height) , BackGroundImage);
 	}
 
-    public static void TransitionEffect()
+    public static void TransitionEffect ()
     {
         if (IsOnTransition)
         {
-            GUI.color = new Color(0, 0, 0, AlphaChannel);
+            GUI.color = new Color(0 , 0 , 0 , AlphaChannel);
 
-            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), TransitionImage);
+            GUI.DrawTexture(new Rect(0 , 0 , Screen.width , Screen.height) , TransitionImage);
 
             GUI.color = DefaultColor;
         }

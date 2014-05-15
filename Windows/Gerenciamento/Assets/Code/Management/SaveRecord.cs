@@ -10,7 +10,9 @@ public class SaveRecord : MonoBehaviour
     TextBox NameBox;
 	
 	Button OKButton;
-	
+
+    public GUIStyle TextFieldStyle , ButtonStyle;
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -20,20 +22,20 @@ public class SaveRecord : MonoBehaviour
         {
             case GameLanguage.English:
 
-            	BackGroundImage = (Texture2D)Resources.Load("BackGroundImages/SaveRecord");
+                BackGroundImage = Resources.Load("BackGroundImages/SaveRecord") as Texture2D;
 
             break;
 
         	case GameLanguage.Portugues:
-			
-				BackGroundImage = (Texture2D)Resources.Load("Telas/SalvarRecorde");
+
+                BackGroundImage = Resources.Load("Telas/SalvarRecorde") as Texture2D;
 			
             break;
         }
 
         # endregion
 		
-		NameBox = new TextBox(new Vector2(500 , 300) , string.Empty);
+		NameBox = new TextBox(new Vector2(500 , 300) , new Vector2(100 , 30) , string.Empty);
 		
 		OKButton = new Button("Buttons/OK" , new Vector2(500 , 400));
 	}
@@ -54,15 +56,16 @@ public class SaveRecord : MonoBehaviour
 		}
 	}
 	
-	void OnGUI()
+	void OnGUI ()
 	{
 		StateManager.DrawBackGroundImage(BackGroundImage);
 
         # region HUD Draw
 
-        NameBox.Draw(StateManager.GameSkin.textField);
-		
-		OKButton.Draw();
+        NameBox.Draw();
+        //NameBox.Draw(TextFieldStyle);
+
+		OKButton.Draw(ButtonStyle);
 
         # endregion
 
@@ -113,7 +116,7 @@ public class SaveRecord : MonoBehaviour
         StateManager.TransitionEffect();
 	}
 
-    void GetMenu()
+    void GetMenu ()
     {
         GamePlay.ResetScore();
 
@@ -122,7 +125,7 @@ public class SaveRecord : MonoBehaviour
         StateManager.ChangeState(GameStates.Menu);
     }
 
-    void GetRanking()
+    void GetRanking ()
     {
         PlayerController.Save();
 

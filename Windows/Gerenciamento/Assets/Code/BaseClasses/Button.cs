@@ -10,7 +10,7 @@ public class Button
 	
 	public bool Clicked;
 	
-	public Button (string ImagePath, Vector2 Position)
+	public Button (string ImagePath , Vector2 Position)
 	{
 		Image = (Texture2D)Resources.Load(ImagePath);
         
@@ -19,8 +19,13 @@ public class Button
 		Clicked = false;
 	}
 	
-	public void Draw()
+	public void Draw ()
 	{
 		Clicked = GUI.Button(BoundingRectangle , Image);		
 	}
+
+    public void Draw (GUIStyle ButtonStyle)
+    {
+        Clicked = GUI.Button(BoundingRectangle , Image , ButtonStyle);
+    }
 }

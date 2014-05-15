@@ -16,14 +16,14 @@ public class Loading : MonoBehaviour
 		switch (StateManager.CurrentLanguage)
         {
             case GameLanguage.English:
-			
-				BackGroundImage = (Texture2D)Resources.Load("BackGroundImages/Loading");
+
+                BackGroundImage = Resources.Load("BackGroundImages/Loading") as Texture2D;
 
             break;
 
         	case GameLanguage.Portugues:
 
-            	BackGroundImage = (Texture2D)Resources.Load("Telas/Carregando");
+                BackGroundImage = Resources.Load("Telas/Carregando") as Texture2D;
 
             break;
         }
@@ -52,7 +52,7 @@ public class Loading : MonoBehaviour
 		}		
 	}
 	
-	void OnGUI()
+	void OnGUI ()
 	{
 		StateManager.DrawBackGroundImage(BackGroundImage);
 

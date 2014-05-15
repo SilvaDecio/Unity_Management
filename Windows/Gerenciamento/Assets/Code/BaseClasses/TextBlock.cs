@@ -8,16 +8,19 @@ public class TextBlock
 	
 	public string Text;
 	
-	static float Width = 100 , Heigth = 50;
-	
-	public TextBlock (Vector2 Position , string text)
+	public TextBlock (Vector2 Position , Vector2 Size , string text)
 	{		
 		Text = text;
 		
-		BoundingRectangle = new Rect(Position.x , Position.y , Width , Heigth);
+		BoundingRectangle = new Rect(Position.x , Position.y , Size.x , Size.y);
 	}
-	
-	public void Draw(GUIStyle LabelStyle)
+
+    public void Draw ()
+    {
+        GUI.Label(BoundingRectangle , Text);
+    }
+
+	public void Draw (GUIStyle LabelStyle)
 	{
 		GUI.Label(BoundingRectangle , Text , LabelStyle);
 	}

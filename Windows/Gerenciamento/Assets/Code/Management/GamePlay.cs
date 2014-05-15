@@ -28,38 +28,28 @@ public class GamePlay : MonoBehaviour
 
     public static GameObject LocalAudio;
 
+    public GUIStyle labelStyle , ButtonStyle;
+
 	// Use this for initialization
 	void Start ()
 	{
-		# region Sliders
-		
-		SongSlider = new Slider(new Vector2(500 , 450) , AudioController.SongVolume);
-
-        EffectSlider = new Slider(new Vector2(800, 450), AudioController.EffectVolume);		
-		
-		SongSliderInfo = new TextBlock(new Vector2(SongSlider.BoundingRectangle.x , SongSlider.BoundingRectangle.y + 30) , string.Empty);
-			
-		EffectSliderInfo = new TextBlock(new Vector2(EffectSlider.BoundingRectangle.x , SongSlider.BoundingRectangle.y + 30) , string.Empty);
-		
-		# endregion
-		
 		# region Language
 
         switch (StateManager.CurrentLanguage)
         {
             case GameLanguage.English:
 
-            	BackGroundImage = (Texture2D)Resources.Load("BackGroundImages/GamePlay");
-			
-				PauseImage = (Texture2D)Resources.Load("BackGroundImages/Pause");
+            	BackGroundImage = Resources.Load("BackGroundImages/GamePlay") as Texture2D;
+
+                PauseImage = Resources.Load("BackGroundImages/Pause") as Texture2D;
 			
             break;
 
         	case GameLanguage.Portugues:
-			
-				BackGroundImage = (Texture2D)Resources.Load("Telas/Jogando");
-			
-				PauseImage = (Texture2D)Resources.Load("Telas/Pausa");
+
+                BackGroundImage = Resources.Load("Telas/Jogando") as Texture2D;
+
+                PauseImage = Resources.Load("Telas/Pausa") as Texture2D;
 			
             break;
         }
@@ -67,14 +57,30 @@ public class GamePlay : MonoBehaviour
         # endregion
 		
 		# region Pause
+
+        # region Buttons
+
+        ResumeButton = new Button("Buttons/Pause/Resume" , new Vector2(200 , 250));
 		
-		ResumeButton = new Button("Buttons/Pause/Resume" , new Vector2(400 , 250));
+		RestartButton = new Button("Buttons/Pause/Restart" , new Vector2(400 , 250));
 		
-		RestartButton = new Button("Buttons/Pause/Restart" , new Vector2(600 , 250));
-		
-		MenuButton = new Button("Buttons/Pause/Menu" , new Vector2(800 , 250));
+		MenuButton = new Button("Buttons/Pause/Menu" , new Vector2(600 , 250));
 
         //VibrationButton = new Button("Buttons/Vibration", new Vector2());
+
+        # endregion
+
+        # region Sliders
+
+        SongSlider = new Slider(new Vector2(300 , 450) , new Vector2(100 , 100) , AudioController.SongVolume * 10);
+
+        EffectSlider = new Slider(new Vector2(600 , 450) , new Vector2(100 , 100) , AudioController.EffectVolume * 10);
+
+        SongSliderInfo = new TextBlock(new Vector2(SongSlider.BoundingRectangle.x , SongSlider.BoundingRectangle.y + 30) , new Vector2(100 , 50) , string.Empty);
+
+        EffectSliderInfo = new TextBlock(new Vector2(EffectSlider.BoundingRectangle.x , SongSlider.BoundingRectangle.y + 30) , new Vector2(100 , 50) , string.Empty);
+
+        # endregion
 		
 		# endregion
 
@@ -82,11 +88,7 @@ public class GamePlay : MonoBehaviour
 
         if (StateManager.HasAudioControl)
         {
-            if (GameObject.Find("AudioController"))
-            {
-                //GameObject.Destroy(Menu.LocalAudio);
-            }
-            else
+            if (!GameObject.Find("AudioController"))
             {
                 CreateAudio();
             }
@@ -116,6 +118,8 @@ public class GamePlay : MonoBehaviour
                 }
 
                 # endregion
+
+                GameObject.Find("AudioController").audio.volume = AudioController.SongVolume;
 			}
 			else
             {
@@ -158,7 +162,7 @@ public class GamePlay : MonoBehaviour
 		}
 	}
 	
-	void OnGUI()
+	void OnGUI ()
 	{
 		if (Paused)
 		{
@@ -168,10 +172,10 @@ public class GamePlay : MonoBehaviour
 
             # region Draw
 
-            ResumeButton.Draw();
-			RestartButton.Draw();
-			MenuButton.Draw();
-            //VibrationButton.Draw();
+            ResumeButton.Draw(ButtonStyle);
+            RestartButton.Draw(ButtonStyle);
+            MenuButton.Draw(ButtonStyle);
+            //VibrationButton.Draw(ButtonStyle);
 
             # endregion
 
@@ -209,13 +213,8 @@ public class GamePlay : MonoBehaviour
 
             # region Sliders
 
-            SongSlider.Draw(StateManager.GameSkin.horizontalSlider, StateManager.GameSkin.horizontalSliderThumb);
-
-            EffectSlider.Draw(StateManager.GameSkin.horizontalSlider, StateManager.GameSkin.horizontalSliderThumb);
-
-            AudioController.SongVolume = (int)SongSlider.Value;
-
-            AudioController.EffectVolume = (int)EffectSlider.Value;
+            SongSlider.Draw(0.0f , 10.0f);
+            EffectSlider.Draw(0.0f , 10.0f);
 
             # region Language
 
@@ -223,26 +222,29 @@ public class GamePlay : MonoBehaviour
         	{
         	    case GameLanguage.English:
 
-                    SongSliderInfo.Text = "Musics		" + (int)AudioController.SongVolume;
-
-                    EffectSliderInfo.Text = "Effects		" + (int)AudioController.EffectVolume;
+                    SongSliderInfo.Text = "Musics		" + (int)SongSlider.Value;
+                    EffectSliderInfo.Text = "Effects		" + (int)EffectSlider.Value;
 			
         	    break;
 			
         		case GameLanguage.Portugues:
 
-                SongSliderInfo.Text = "Músicas		" + (int)AudioController.SongVolume;
-
-                EffectSliderInfo.Text = "Efeitos		" + (int)AudioController.EffectVolume;
+                    SongSliderInfo.Text = "Musicas		" + (int)SongSlider.Value;
+                    EffectSliderInfo.Text = "Efeitos		" + (int)EffectSlider.Value;
 				
         	    break;
             }
 
             # endregion
 
-            SongSliderInfo.Draw(StateManager.GameSkin.label);
+            SongSliderInfo.Draw(labelStyle);
+            EffectSliderInfo.Draw(labelStyle);
 
-            EffectSliderInfo.Draw(StateManager.GameSkin.label);
+            AudioController.SongVolume = (int)SongSlider.Value;
+            AudioController.EffectVolume = (int)EffectSlider.Value;
+
+            AudioController.SongVolume /= 10;
+            AudioController.EffectVolume /= 10;
 			
 			# endregion
 		}
@@ -250,29 +252,29 @@ public class GamePlay : MonoBehaviour
 		{
 			StateManager.DrawBackGroundImage(BackGroundImage);
 
-            ScoreInfo.Draw(StateManager.GameSkin.label);
+            ScoreInfo.Draw(labelStyle);
 		}
 
         StateManager.TransitionEffect();
 	}
 
-    void Restart()
+    void Restart ()
     {
         Paused = false;
 
         Score = 0f;
 
-        ScoreInfo = new TextBlock(new Vector2(500 , 300), Score.ToString());
+        ScoreInfo = new TextBlock(new Vector2(500 , 300) , new Vector2(100 , 50) , Score.ToString());
 
         LocalAudio.audio.Play();
     }
 
-    public static void ResetScore()
+    public static void ResetScore ()
     {
         Score = 0f;
     }
 
-    void GetPause()
+    void GetPause ()
     {
         if (StateManager.HasAudioControl)
         {
@@ -282,7 +284,7 @@ public class GamePlay : MonoBehaviour
         Paused = true;
     }
 
-    void OutPause()
+    void OutPause ()
     {
         if (StateManager.HasAudioControl)
         {
@@ -294,7 +296,7 @@ public class GamePlay : MonoBehaviour
         Paused = false;
     }
 
-    void GetWon()
+    void GetWon ()
     {
         Score = (int)Score;
 
@@ -303,7 +305,7 @@ public class GamePlay : MonoBehaviour
         StateManager.ChangeState(GameStates.Won);
     }
 
-    void GetLost()
+    void GetLost ()
     {
         Score = (int)Score;
 
@@ -312,12 +314,13 @@ public class GamePlay : MonoBehaviour
         StateManager.ChangeState(GameStates.Lost);
     }
 
-    void CreateAudio()
+    void CreateAudio ()
     {
         LocalAudio = new GameObject("AudioController");
+
         LocalAudio.AddComponent<AudioSource>();
         LocalAudio.audio.clip = AudioController.Songs[SongType.GamePlay];
         LocalAudio.audio.loop = true;
-        LocalAudio.audio.volume = AudioController.SongVolume / 10;
+        LocalAudio.audio.volume = AudioController.SongVolume;
     }
 }

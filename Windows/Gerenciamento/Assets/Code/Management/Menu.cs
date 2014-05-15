@@ -10,6 +10,8 @@ public class Menu : MonoBehaviour
 
     public static GameObject LocalAudio;
 
+    public GUIStyle ButtonStyle;
+
 	// Use this for initialization
 	void Start ()
 	{		
@@ -19,13 +21,13 @@ public class Menu : MonoBehaviour
         {
             case GameLanguage.English:
 
-            	BackGroundImage = (Texture2D)Resources.Load("BackGroundImages/Menu");
+                BackGroundImage = Resources.Load("BackGroundImages/Menu") as Texture2D;
 
             break;
 
         	case GameLanguage.Portugues:
-			
-				BackGroundImage = (Texture2D)Resources.Load("Telas/Menu");
+
+                BackGroundImage = Resources.Load("Telas/Menu") as Texture2D;
 			
             break;
         }
@@ -34,15 +36,15 @@ public class Menu : MonoBehaviour
 		
 		# region Buttons
 		
-		PlayButton = new Button("Buttons/Menu/Play" , new Vector2(200 , 300));
+		PlayButton = new Button("Buttons/Menu/Play" , new Vector2(150 , 250));
 		
-		DirectionsButton = new Button("Buttons/Menu/Directions" , new Vector2(400 , 300));
+		DirectionsButton = new Button("Buttons/Menu/Directions" , new Vector2(400 , 250));
 		
-		CreditsButton = new Button("Buttons/Menu/Credits" , new Vector2(600 , 300));
+		CreditsButton = new Button("Buttons/Menu/Credits" , new Vector2(650 , 250));
 		
-		RankingButton = new Button("Buttons/Menu/Ranking" , new Vector2(800 , 300));
+		RankingButton = new Button("Buttons/Menu/Ranking" , new Vector2(275 , 450));
 		
-		SettingsButton = new Button("Buttons/Menu/Settings" , new Vector2(1000 , 300));
+		SettingsButton = new Button("Buttons/Menu/Settings" , new Vector2(575 , 450));
 		
 		# endregion
 
@@ -50,16 +52,7 @@ public class Menu : MonoBehaviour
 
         if (StateManager.HasAudioControl)
         {
-            if (GameObject.Find("AudioController"))
-            {
-                //if (GameObject.Find("AudioController").audio.clip == AudioController.Songs[SongType.GamePlay])
-                //{
-                    
-                //}
-
-                //GameObject.Destroy(GamePlay.LocalAudio);
-            }
-            else
+            if (!GameObject.Find("AudioController"))
             {
                 CreateAudio();
             }
@@ -84,7 +77,7 @@ public class Menu : MonoBehaviour
 		}
 	}
 	
-	void OnGUI()
+	void OnGUI ()
 	{
         StateManager.DrawBackGroundImage(BackGroundImage);
 
@@ -92,11 +85,11 @@ public class Menu : MonoBehaviour
 
         # region Draw
 
-        PlayButton.Draw();
-		DirectionsButton.Draw();
-		CreditsButton.Draw();
-		RankingButton.Draw();
-		SettingsButton.Draw();
+        PlayButton.Draw(ButtonStyle);
+		DirectionsButton.Draw(ButtonStyle);
+        CreditsButton.Draw(ButtonStyle);
+        RankingButton.Draw(ButtonStyle);
+        SettingsButton.Draw(ButtonStyle);
 
         # endregion
 
@@ -106,6 +99,8 @@ public class Menu : MonoBehaviour
         {
             if (PlayButton.Clicked)
             {
+                AudioController.PlaySoundEffect(EffetcType.Button);
+                
                 StateManager.ChangeState(GameStates.GamePlay);
 
                 GameObject.Destroy(LocalAudio);
@@ -113,6 +108,8 @@ public class Menu : MonoBehaviour
 
             if (DirectionsButton.Clicked)
             {
+                AudioController.PlaySoundEffect(EffetcType.Button);
+
                 StateManager.ChangeState(GameStates.Directions);
 
                 DontDestroyOnLoad(LocalAudio);
@@ -120,6 +117,8 @@ public class Menu : MonoBehaviour
 
             if (CreditsButton.Clicked)
             {
+                AudioController.PlaySoundEffect(EffetcType.Button);
+
                 StateManager.ChangeState(GameStates.Credits);
 
                 DontDestroyOnLoad(LocalAudio);
@@ -127,6 +126,8 @@ public class Menu : MonoBehaviour
 
             if (RankingButton.Clicked)
             {
+                AudioController.PlaySoundEffect(EffetcType.Button);
+                
                 StateManager.ChangeState(GameStates.Ranking);
 
                 DontDestroyOnLoad(LocalAudio);
@@ -134,6 +135,8 @@ public class Menu : MonoBehaviour
 
             if (SettingsButton.Clicked)
             {
+                AudioController.PlaySoundEffect(EffetcType.Button);
+
                 StateManager.ChangeState(GameStates.Settings);
 
                 DontDestroyOnLoad(LocalAudio);
@@ -147,13 +150,15 @@ public class Menu : MonoBehaviour
         StateManager.TransitionEffect();
 	}
 
-    void CreateAudio()
+    void CreateAudio ()
     {
         LocalAudio = new GameObject("AudioController");
+
         LocalAudio.AddComponent<AudioSource>();
         LocalAudio.audio.clip = AudioController.Songs[SongType.Menu];
         LocalAudio.audio.loop = true;
-        LocalAudio.audio.volume = AudioController.SongVolume / 10;
+        LocalAudio.audio.volume = AudioController.SongVolume;
+
         LocalAudio.audio.Play();
     }
 }
